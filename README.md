@@ -1,3 +1,5 @@
+This repo is based on https://github.com/cyberark/kubernetes-conjur-deploy
+
 # conjur-openshift-follower-deploy
 
 This repository contains scripts for deploying a Conjur followers to a
@@ -19,15 +21,11 @@ The Conjur appliance image can be loaded with _load_conjur_tarfile.sh. The scrip
 
 ### Platform
 
-If you are working with OpenShift, you will need to set:
+This sample is for OpenShift, you will need to set:
 
 ```
 export PLATFORM=openshift
-export OSHIFT_CLUSTER_ADMIN_USERNAME=<name-of-cluster-admin> # system:admin in minishift
-export OSHIFT_CONJUR_ADMIN_USERNAME=<name-of-conjur-namespace-admin> # developer in minishift
 ```
-
-Otherwise, this variable will default to `kubernetes`.
 
 #### OpenShift
 
@@ -41,7 +39,7 @@ export DOCKER_REGISTRY_PATH=docker-registry-<registry-namespace>.<routing-domain
 
 Please make sure that you are logged in to the registry before deploying.
 
-### Kubernetes / OpenShift Configuration
+### Kubernetes/OpenShift Configuration
 
 Before deploying Conjur, you must first make sure that you are connected to your
 chosen platform with a user that has the `cluster-admin` role. The user must be
