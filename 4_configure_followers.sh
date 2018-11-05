@@ -15,7 +15,7 @@ mkdir -p $seed_dir
 
 
 #$cli exec $master_pod_name evoke seed follower conjur-follower > "./$seed_dir/follower-seed.tar"
-docker exec conjur-master evoke seed follower conjur-follower  > "./$seed_dir/follower-seed.tar"
+docker exec conjur-master evoke seed follower conjur-follower.$CONJUR_NAMESPACE_NAME.svc.cluster.local  > "./$seed_dir/follower-seed.tar"
 
 pod_list=$($cli get pods -l role=follower --no-headers | awk '{ print $1 }')
 
