@@ -2,9 +2,9 @@ This repo is based on https://github.com/cyberark/kubernetes-conjur-deploy
 
 # conjur-openshift-follower-deploy
 
-This repository contains scripts for deploying a Conjur followers to a
-OpenShift environment. This script assume that Conjur Master is running 
-outside openshift environment and accessible at conjur-master.cyberark.local
+This repository contains scripts for deploying Conjur followers in  
+OpenShift cluster. The script assumes that Conjur Master is up and running 
+outside openshift environment and accessible from OpenShift environment.
 
 **Note:** These scripts are intended for use with Conjur v5
 
@@ -39,7 +39,7 @@ export DOCKER_REGISTRY_PATH=docker-registry-<registry-namespace>.<routing-domain
 
 Please make sure that you are logged in to the registry before deploying.
 
-### Kubernetes/OpenShift Configuration
+### OpenShift Configuration
 
 Before deploying Conjur, you must first make sure that you are connected to your
 chosen platform with a user that has the `cluster-admin` role. The user must be
@@ -97,20 +97,9 @@ for interacting with Conjur through the CLI or UI.
 ### Conjur CLI 
 
 The deploy scripts include a manifest for creating a Conjur CLI container within
-the OpenShift/Kubernetes environment that can then be used to interact with Conjur. Deploy
-the CLI pod and SSH into it:
+the OpenShift environment that can then be used to interact with Conjur.
 
-```
-# Kubernetes
-kubectl create -f ./manifests/conjur-cli.yaml
-kubectl exec -it [cli-pod-name] bash
-
-# OpenShift
-oc create -f ./manifests/conjur-cli.yaml
-oc exec -it <cli-pod-name> bash
-```
-
-Once inside the CLI container, use the admin credentials to connect to Conjur:
+Use the admin credentials to connect to Conjur:
 
 ```
 conjur init -h conjur-master
