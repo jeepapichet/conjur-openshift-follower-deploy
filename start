@@ -4,7 +4,7 @@ set -euo pipefail
 source bootstrap.env
 
 if [[ $PLATFORM == openshift ]]; then
-  oc login -u $OSHIFT_CLUSTER_ADMIN_USERNAME
+  sudo oc login -u $OSHIFT_CLUSTER_ADMIN_USERNAME
 fi
 
 
@@ -16,4 +16,3 @@ fi
 ./2_build_and_push_containers.sh
 ./3_deploy_conjur_followers.sh
 ./4_configure_followers.sh
-./5_init_cli.sh

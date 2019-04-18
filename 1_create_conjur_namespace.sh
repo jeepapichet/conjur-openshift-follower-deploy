@@ -9,7 +9,7 @@ set_namespace default
 
 if [[ $PLATFORM == openshift ]]; then
   echo "Logging in as cluster admin..."
-  oc login -u $OSHIFT_CLUSTER_ADMIN_USERNAME
+  $cli login -u $OSHIFT_CLUSTER_ADMIN_USERNAME
 fi
 
 if has_namespace "$CONJUR_NAMESPACE_NAME"; then
@@ -21,7 +21,7 @@ else
   if [ $PLATFORM = 'kubernetes' ]; then
     kubectl create namespace $CONJUR_NAMESPACE_NAME
   elif [ $PLATFORM = 'openshift' ]; then
-    oc new-project $CONJUR_NAMESPACE_NAME
+    $cli new-project $CONJUR_NAMESPACE_NAME
   fi
 
   set_namespace $CONJUR_NAMESPACE_NAME
@@ -44,14 +44,14 @@ sed -e "s#{{ CONJUR_NAMESPACE_NAME }}#$CONJUR_NAMESPACE_NAME#g" ./$PLATFORM/conj
 
 if [[ "$PLATFORM" == "openshift" ]]; then
   # allow pods with conjur-cluster serviceaccount to run as root
-  oc adm policy add-scc-to-user anyuid "system:serviceaccount:$CONJUR_NAMESPACE_NAME:$CONJUR_SERVICEACCOUNT_NAME"
+  $cli adm policy add-scc-to-user anyuid "system:serviceaccount:$CONJUR_NAMESPACE_NAME:$CONJUR_SERVICEACCOUNT_NAME"
 
   # add permissions for Conjur admin user on registry, default & Conjur cluster namespaces
-  oc adm policy add-role-to-user system:registry $OSHIFT_CONJUR_ADMIN_USERNAME
-  oc adm policy add-role-to-user system:image-builder $OSHIFT_CONJUR_ADMIN_USERNAME
-  oc adm policy add-role-to-user admin $OSHIFT_CONJUR_ADMIN_USERNAME -n default
-  oc adm policy add-role-to-user admin $OSHIFT_CONJUR_ADMIN_USERNAME -n $CONJUR_NAMESPACE_NAME
+  $cli adm policy add-role-to-user system:registry $OSHIFT_CONJUR_ADMIN_USERNAME
+  $cli adm policy add-role-to-user system:image-builder $OSHIFT_CONJUR_ADMIN_USERNAME
+  $cli adm policy add-role-to-user admin $OSHIFT_CONJUR_ADMIN_USERNAME -n default
+  $cli adm policy add-role-to-user admin $OSHIFT_CONJUR_ADMIN_USERNAME -n $CONJUR_NAMESPACE_NAME
   echo "Logging in as Conjur admin user, provide password as needed..."
-  oc login -u $OSHIFT_CONJUR_ADMIN_USERNAME
+  $cli login -u $OSHIFT_CONJUR_ADMIN_USERNAME
 fi
 

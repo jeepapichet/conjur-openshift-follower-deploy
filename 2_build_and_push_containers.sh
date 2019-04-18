@@ -6,13 +6,13 @@ set -euo pipefail
 announce "Tagging and pushing Conjur appliance"
 
 if [ $PLATFORM = 'openshift' ]; then
-    docker login -u _ -p $(oc whoami -t) $DOCKER_REGISTRY_PATH
+    sudo docker login -u _ -p $($cli whoami -t) $DOCKER_REGISTRY_PATH
 fi
 
 conjur_appliance_image=$(platform_image conjur-appliance)
-docker tag $CONJUR_APPLIANCE_IMAGE $conjur_appliance_image
+sudo docker tag $CONJUR_APPLIANCE_IMAGE $conjur_appliance_image
 if ! is_minienv; then
-  docker push $conjur_appliance_image
+  sudo docker push $conjur_appliance_image
 fi
 
 #announce "Building and pushing haproxy image."
@@ -31,12 +31,12 @@ announce "Pulling and pushing Conjur CLI image."
 
 # Assume conjur-cli:5-latest is already pulled
 #docker pull cyberark/conjur-cli:$CONJUR_VERSION-latest
-docker tag cyberark/conjur-cli:$CONJUR_VERSION-latest conjur-cli:$CONJUR_NAMESPACE_NAME
+sudo docker tag cyberark/conjur-cli:$CONJUR_VERSION-latest conjur-cli:$CONJUR_NAMESPACE_NAME
 
 cli_app_image=$(platform_image conjur-cli)
-docker tag conjur-cli:$CONJUR_NAMESPACE_NAME $cli_app_image
+sudo docker tag conjur-cli:$CONJUR_NAMESPACE_NAME $cli_app_image
 if ! is_minienv; then
-  docker push $cli_app_image
+  sudo docker push $cli_app_image
 fi
 
 echo "Docker images pushed."

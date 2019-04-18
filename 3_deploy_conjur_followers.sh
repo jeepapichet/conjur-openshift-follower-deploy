@@ -35,8 +35,6 @@ fi
 
 conjur_appliance_image=$(platform_image "conjur-appliance")
 
-announce "Deploying Master cluster pods."
-
 if is_minienv; then
   IMAGE_PULL_POLICY='Never'
 else
@@ -44,12 +42,12 @@ else
 fi
 
 
-announce "Deploying Conjur CLI pod."
-
-cli_app_image=$(platform_image conjur-cli)
-sed -e "s#{{ DOCKER_IMAGE }}#$cli_app_image#g" ./$PLATFORM/conjur-cli.yml |
-  sed -e "s#{{ IMAGE_PULL_POLICY }}#$IMAGE_PULL_POLICY#g" |
-  $cli create -f -
+#announce "Deploying Conjur CLI pod."
+#
+#cli_app_image=$(platform_image conjur-cli)
+#sed -e "s#{{ DOCKER_IMAGE }}#$cli_app_image#g" ./$PLATFORM/conjur-cli.yml |
+#  sed -e "s#{{ IMAGE_PULL_POLICY }}#$IMAGE_PULL_POLICY#g" |
+#  $cli create -f -
 
 announce "Deploying Follower pods."
 
